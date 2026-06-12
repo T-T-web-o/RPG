@@ -1,6 +1,9 @@
 #include "GameScene.h"
+#include "EnemyFactory.h"
 #include <cmath>
 #include "DxLib.h"
+#include <limits>
+
 
 GameScene::GameScene(CharacterType type)
 {
@@ -21,8 +24,7 @@ GameScene::GameScene(CharacterType type)
 
 	for (int i = 0; i < 5; i++)
 	{
-		auto enemy = std::make_unique<Enemy>();
-		enemy->Init(BLUE_SLIME);
+		auto enemy = EnemyFactory::CreateEnemy(BLUE_SLIME);
 
 		enemy->x = 1000 + i * 300;
 		enemy->y = 540;
@@ -39,7 +41,7 @@ GameScene::~GameScene()
 void GameScene::Update()
 {
 	targetEnemy = nullptr;
-	minDistance = 999999;
+	minDistance = INT_MAX;
 
 	if (!playerEncount)
 	{
@@ -67,7 +69,7 @@ void GameScene::Update()
 		}
 
 		// ìGÇ∆ÇÃãóó£ÇÇÕÇ©ÇÈ
-		distance = abs(enemy->x - player.x);
+		int distance = abs(enemy->x - player.x);
 
 		if (distance < minDistance)
 		{
@@ -88,18 +90,26 @@ void GameScene::Update()
 			if (attackTimer >= 30)
 			{
 				targetEnemy->hp -= player.attack;
+				if (targetEnemy->hp < 0)
+				{
+					targetEnemy->hp = 0;
+				}
 				attackTimer = 0;
 			}
 		}
 
 		// ìGÇÃçUåÇ
-		if (minDistance <= targetEnemy->attackRange)
+		if (enemyEncount)
 		{
 			enemyAttackTimer++;
 
 			if (enemyAttackTimer >= 60)
 			{
 				player.hp -= targetEnemy->attack;
+				if (player.hp < 0)
+				{
+					player.hp = 0;
+				}
 				enemyAttackTimer = 0;
 			}
 		}
@@ -109,24 +119,14 @@ void GameScene::Update()
 		{
 			targetEnemy->isDead = true;
 		}
-		if (player.hp <= 0)
-		{
-
-		}
 	}
 	else
 	{
 		playerEncount = false;
+		enemyEncount = false;
 	}
 
-	if (playerEncount)
-	{
-		player.isAttack = true;
-	}
-	else
-	{
-		player.isAttack = false;
-	}
+	player.isAttack = playerEncount;
 }
 
 void GameScene::Draw()
@@ -153,4 +153,7 @@ void GameScene::Draw()
 
 	// HP
 	DrawBox(250, 400, 250 + hpWidth, 420, GetColor(0, 255, 0), TRUE);
+
+	SetFontSize(20);
+	DrawFormatString(250,380,GetColor(255, 255, 255),TEXT("HP %d / %d"),player.hp,player.maxHp);
 }

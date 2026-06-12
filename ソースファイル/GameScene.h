@@ -18,9 +18,6 @@ private:
 
 	Character player;
 
-
-	int distance;
-
 	bool playerEncount;
 	bool enemyEncount;
 

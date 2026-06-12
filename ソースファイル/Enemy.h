@@ -17,6 +17,7 @@ public:
 	EnemyType type;
 
 	int hp;
+	int maxHp;
 	int attack;
 	int defense;
 	int attackRange;

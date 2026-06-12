@@ -1,5 +1,4 @@
 #pragma once
-#include "Enemy.h"
 
 // キャラの種類
 enum CharacterType
@@ -24,9 +23,6 @@ public:
     // 座標
     int x, y;
 
-    // 画像サイズ
-    int w, h;
-
     // 削除フラグ
     bool isDead;  
 
@@ -44,9 +40,6 @@ public:
 
     // キャラの種類
     CharacterType type;
-
-    // 敵
-    Enemy enemy;
 
     // コンストラクタ
     Character();

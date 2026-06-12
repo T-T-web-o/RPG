@@ -7,7 +7,7 @@ Character::Character()
 
     // 座標初期化
 	x = 200;
-	y = 200;
+	y = 440;
 
     // ステータス初期化
 	hp = 0;
@@ -24,6 +24,8 @@ Character::Character()
     // 攻撃フラグ初期化
     isAttack = false;
 
+    // 死亡フラグ
+    isDead = false;
     // キャラクター画像 
     LoadDivGraph(TEXT("Resource/Model/knight.png"), 12, 6, 2, 248, 276, knightHandle);
     LoadDivGraph(TEXT("Resource/Model/ranger.png"), 12, 6, 2, 248, 276, rangerHandle);
@@ -106,11 +108,11 @@ void Character::Draw()
     case KNIGHT:
         if (isAttack)
         {
-            DrawGraph(x, y + 160, knightHandle[animFrame + 6], TRUE);
+            DrawGraph(x, y-80, knightHandle[animFrame + 6], TRUE);
         }
         else
         {
-            DrawGraph(x, y + 240, knightHandle[animFrame], TRUE);
+            DrawGraph(x, y , knightHandle[animFrame], TRUE);
         }
         break;
 
@@ -118,11 +120,11 @@ void Character::Draw()
     case RANGER:
         if (isAttack)
         {
-            DrawGraph(x, y + 160, rangerHandle[animFrame + 6], TRUE);
+            DrawGraph(x, y-80, rangerHandle[animFrame + 6], TRUE);
         }
         else
         {
-            DrawGraph(x, y + 240, rangerHandle[animFrame], TRUE);
+            DrawGraph(x, y, rangerHandle[animFrame], TRUE);
         }
         break;
 
@@ -130,11 +132,11 @@ void Character::Draw()
     case HEALER:
         if (isAttack)
         {
-            DrawGraph(x, y + 160, healerHandle[animFrame + 6], TRUE);
+            DrawGraph(x, y-80 , healerHandle[animFrame + 6], TRUE);
         }
         else
         {
-            DrawGraph(x, y + 240, healerHandle[animFrame], TRUE);
+            DrawGraph(x, y, healerHandle[animFrame], TRUE);
         }
         break;
 

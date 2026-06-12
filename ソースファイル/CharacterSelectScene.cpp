@@ -27,7 +27,12 @@ void CharacterSelectScene::Update()
 {
     GetMousePoint(&mouseX, &mouseY);
 
-    if (GetMouseInput() & MOUSE_INPUT_LEFT)
+    static int oldMouse = 0;
+
+    int mouse = GetMouseInput();
+
+    if ((mouse & MOUSE_INPUT_LEFT) &&
+        !(oldMouse & MOUSE_INPUT_LEFT))
     {
         // KNIGHT
         if (mouseX >= 100 && mouseX <= 320 &&

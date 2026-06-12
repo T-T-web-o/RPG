@@ -5,10 +5,12 @@
 class GameManager
 {
 private:
-	std::unique_ptr<Scene> currentScene;
-
 	GameManager();
 
+	GameManager(const GameManager&) = delete;
+	GameManager& operator=(const GameManager&) = delete;
+
+	std::unique_ptr<Scene> currentScene;
 public:
 	static GameManager& GetInstance();
 	void Update();

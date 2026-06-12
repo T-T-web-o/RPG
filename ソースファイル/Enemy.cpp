@@ -3,10 +3,13 @@
 
 Enemy::Enemy()
 {
+	type = ENEMY_NONE;
+
 	x = 1300;
 	y = 540;
 
 	hp = 0;
+	maxHp = 0;
 	attack = 0;
 	defense = 0;
 	attackRange = 0;
@@ -28,6 +31,7 @@ void Enemy::Init(EnemyType type)
 	{
 	case BLUE_SLIME:
 		hp = 30;
+		maxHp = 30;
 		attack = 10;
 		defense = 0;
 		attackRange = 240;
@@ -35,6 +39,7 @@ void Enemy::Init(EnemyType type)
 
 	case GREEN_SLIME:
 		hp = 40;
+		maxHp = 40;
 		attack = 10;
 		defense = 0;
 		attackRange = 240;
@@ -54,11 +59,14 @@ void Enemy::Draw()
 		return;
 	}
 
+	int w = 100;
+	int h = 100;
+
 	DrawExtendGraph(
 		x,
 		y,
-		x + 100,
-		y + 100,
+		x + w,
+		y + h,
 		enemyHandle,
 		TRUE
 	);
