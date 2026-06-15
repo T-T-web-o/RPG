@@ -25,6 +25,11 @@ private:
 	int attackTimer;
 	int enemyAttackTimer;
 
+	// GameOver
+	bool isGameOver;
+	int gameOverTimer;
+	int youDiedHandle;
+
 	Enemy* targetEnemy;
 	int minDistance;
 

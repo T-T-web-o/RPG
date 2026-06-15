@@ -1,6 +1,8 @@
 #include "Enemy.h"
 #include "DxLib.h"
 
+int Enemy::enemyHandle = -1;
+
 Enemy::Enemy()
 {
 	type = ENEMY_NONE;
@@ -15,12 +17,16 @@ Enemy::Enemy()
 	attackRange = 0;
 
 	isDead = false;
-	enemyHandle = LoadGraph(TEXT("Resource/Model/Enemy1.png"));
+
+	// “G‰æ‘œ‚ğ–¢“Ç‚İ‚İ‚Ìê‡‚Ì‚İƒ[ƒh
+	if (Enemy::enemyHandle == -1)
+	{
+		Enemy::enemyHandle =LoadGraph(TEXT("Resource/Model/Enemy1.png"));
+	}
 }
 
 Enemy::~Enemy()
 {
-	DeleteGraph(enemyHandle);
 }
 
 void Enemy::Init(EnemyType type)
@@ -70,4 +76,5 @@ void Enemy::Draw()
 		enemyHandle,
 		TRUE
 	);
+
 }

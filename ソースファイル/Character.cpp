@@ -53,7 +53,7 @@ void Character::Init(CharacterType type)
     case KNIGHT:
         hp = 110;
         maxHp = 110;
-        attack = 15;
+        attack = 1;
         magic = 0;
         defense = 10;
         attackRange = 250;

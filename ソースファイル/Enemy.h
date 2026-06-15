@@ -24,7 +24,7 @@ public:
 
 	void Init(EnemyType type);
 
-	int enemyHandle;
+	static int enemyHandle;
 
 	bool isDead;
 	Enemy();

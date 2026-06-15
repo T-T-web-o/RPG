@@ -1,5 +1,6 @@
 #include "GameScene.h"
 #include "EnemyFactory.h"
+#include "GameManager.h"
 #include <cmath>
 #include "DxLib.h"
 #include <limits>
@@ -17,8 +18,15 @@ GameScene::GameScene(CharacterType type)
 	
 	enemyEncount = false;
 
+	isGameOver = false;
+
+	gameOverTimer = 0;
+
 	// ”wŒi‰æ‘œ
 	bgHandle = LoadGraph(TEXT("Resource/Model/background.png"));
+
+	// GameOver‰æ‘œ
+	youDiedHandle = LoadGraph(TEXT("Resource/Model/YOUDIED.png"));
 
 	bgX = 0;
 
@@ -63,14 +71,15 @@ void GameScene::Update()
 			continue;
 		}
 
-		if (!enemyEncount)
+		int distance = abs(enemy->x - player.x);
+
+		// UŒ‚”ÍˆÍŠO‚È‚ç‘Oi
+		if (distance > enemy->attackRange)
 		{
 			enemy->Update();
 		}
 
-		// “G‚Æ‚Ì‹——£‚ð‚Í‚©‚é
-		int distance = abs(enemy->x - player.x);
-
+		// ˆê”Ô‹ß‚¢“G‚ð’T‚·
 		if (distance < minDistance)
 		{
 			minDistance = distance;
@@ -106,9 +115,9 @@ void GameScene::Update()
 			if (enemyAttackTimer >= 60)
 			{
 				player.hp -= targetEnemy->attack;
-				if (player.hp < 0)
+				if (player.hp <= 0)
 				{
-					player.hp = 0;
+					isGameOver = true;
 				}
 				enemyAttackTimer = 0;
 			}
@@ -124,6 +133,17 @@ void GameScene::Update()
 	{
 		playerEncount = false;
 		enemyEncount = false;
+	}
+
+	// GameOver
+	if (isGameOver)
+	{
+		gameOverTimer++;
+
+		if (gameOverTimer >= 180)
+		{
+			GameManager::GetInstance().ChangeScene(std::make_unique<GameScene>(player.type));
+		}
 	}
 
 	player.isAttack = playerEncount;
@@ -144,6 +164,20 @@ void GameScene::Draw()
 		{
 			enemy->Draw();
 		}
+
+		int y = 50;
+
+		for (auto& enemy : enemies)
+		{
+			DrawFormatString(
+				50, y,
+				GetColor(255, 255, 255),
+				TEXT("EnemyX=%d"),
+				enemy->x
+			);
+
+			y += 30;
+		}
 	}
 
 	int hpWidth = player.hp * 150 / player.maxHp;
@@ -156,4 +190,10 @@ void GameScene::Draw()
 
 	SetFontSize(20);
 	DrawFormatString(250,380,GetColor(255, 255, 255),TEXT("HP %d / %d"),player.hp,player.maxHp);
+
+	// GameOver—p‰æ‘œ•\Ž¦
+	if (isGameOver)
+	{
+		DrawGraph(0, 200, youDiedHandle, TRUE);
+	}
 }
