@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene.h"
+#include "Character.h"
 #include <memory>
 
 class GameManager
@@ -12,6 +13,9 @@ private:
 
 	std::unique_ptr<Scene> currentScene;
 public:
+
+	Character player;
+
 	static GameManager& GetInstance();
 	void Update();
 	void Draw();

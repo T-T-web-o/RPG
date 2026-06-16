@@ -16,9 +16,6 @@ private:
 	// ”wŒi‚ÌXÀ•W
 	int bgX;
 
-	// player
-	Character player;
-
 	bool playerEncount;
 	bool enemyEncount;
 
@@ -38,7 +35,7 @@ private:
 	int aliveCount;
 
 public:
-	GameScene(CharacterType type);
+	GameScene();
 	~GameScene();
 
 	void SpawnEnemies();

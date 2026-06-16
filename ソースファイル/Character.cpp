@@ -65,6 +65,7 @@ void Character::Init(CharacterType type)
         magic = 0;
         defense = 10;
         attackRange = 250;
+
         level = 1;
         break;
 
@@ -187,5 +188,5 @@ void Character::Draw()
     DrawFormatString(75, 155, GetColor(255, 255, 255), TEXT("EXP %d / %d"), exp, nextExp);
 
     // Š‹à
-    DrawFormatString(70, 190, GetColor(255, 255, 255), TEXT("Š‹à : %d"), gold);
+    DrawFormatString(70, 190, GetColor(255, 255, 255), TEXT("Š‹à:%d"), gold);
 }

@@ -6,11 +6,8 @@
 #include <limits>
 
 
-GameScene::GameScene(CharacterType type)
+GameScene::GameScene()
 {
-	// 使用キャラを取得
-	player.Init(type);
-
 	// 攻撃タイマー
 	attackTimer = 0;
 	enemyAttackTimer = 0;
@@ -60,6 +57,9 @@ void GameScene::SpawnEnemies()
 
 void GameScene::Update()
 {
+	// playerの情報を取得
+	Character& player = GameManager::GetInstance().player;
+
 	aliveCount = 0;
 	targetEnemy = nullptr;
 	minDistance = INT_MAX;
@@ -137,6 +137,7 @@ void GameScene::Update()
 				// プレイヤー死亡
 				if (player.hp <= 0)
 				{
+					player.hp = 0;
 					isGameOver = true;
 				}
 				enemyAttackTimer = 0;
@@ -165,7 +166,7 @@ void GameScene::Update()
 		// 3秒後にリスタート
 		if (gameOverTimer >= 180)
 		{
-			GameManager::GetInstance().ChangeScene(std::make_unique<GameScene>(player.type));
+			GameManager::GetInstance().ChangeScene(std::make_unique<GameScene>());
 		}
 		return;
 	}
@@ -206,6 +207,9 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
+	// playerの情報を取得
+	Character& player = GameManager::GetInstance().player;
+
 	// 背景を描画
 	DrawExtendGraph(bgX, 0, bgX + 1280, 770, bgHandle, TRUE);
 

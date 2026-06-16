@@ -59,8 +59,10 @@ void CharacterSelectScene::Update()
             if (mouseX >= 490 && mouseX <= 790 &&
                 mouseY >= 620 && mouseY <= 690)
             {
+                GameManager::GetInstance().player.Init(selectedType);
+
                 GameManager::GetInstance().ChangeScene(
-                    std::make_unique<GameScene>(selectedType)
+                    std::make_unique<GameScene>()
                 );
             }
         }
