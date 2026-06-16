@@ -53,7 +53,7 @@ void Character::Init(CharacterType type)
     case KNIGHT:
         hp = 110;
         maxHp = 110;
-        attack = 1;
+        attack = 15;
         magic = 0;
         defense = 10;
         attackRange = 250;
@@ -143,5 +143,16 @@ void Character::Draw()
     default:
         break;
     }
-    
+
+    // HPÉoÅ[ï\é¶
+    int hpWidth = hp * 150 / maxHp;
+    // òg
+    DrawBox(250, 400, 400, 420,
+        GetColor(255, 255, 255), FALSE);
+
+    // HP
+    DrawBox(250, 400, 250 + hpWidth, 420, GetColor(0, 255, 0), TRUE);
+
+    SetFontSize(20);
+    DrawFormatString(250, 380, GetColor(255, 255, 255), TEXT("HP %d / %d"), hp, maxHp);
 }

@@ -8,18 +8,21 @@
 
 GameScene::GameScene(CharacterType type)
 {
+	// 使用キャラを取得
 	player.Init(type);
 
+	// 攻撃タイマー
 	attackTimer = 0;
-
 	enemyAttackTimer = 0;
 
+	// 戦闘状況
 	playerEncount = false;
-	
 	enemyEncount = false;
 
+	// ゲームオーバー状態
 	isGameOver = false;
 
+	// ゲームオーバー表示時間
 	gameOverTimer = 0;
 
 	// 背景画像
@@ -28,26 +31,36 @@ GameScene::GameScene(CharacterType type)
 	// GameOver画像
 	youDiedHandle = LoadGraph(TEXT("Resource/Model/YOUDIED.png"));
 
+	// 背景X座標初期化
 	bgX = 0;
 
+	// 敵生成
+	SpawnEnemies();
+}
+
+GameScene::~GameScene()
+{
+	DeleteGraph(bgHandle);
+	DeleteGraph(youDiedHandle);
+}
+
+// 敵をスポーン
+void GameScene::SpawnEnemies()
+{
 	for (int i = 0; i < 5; i++)
 	{
 		auto enemy = EnemyFactory::CreateEnemy(BLUE_SLIME);
 
-		enemy->x = 1000 + i * 300;
+		enemy->x = 1300 + i * 300;
 		enemy->y = 540;
 
 		enemies.push_back(std::move(enemy));
 	}
 }
 
-GameScene::~GameScene()
-{
-	DeleteGraph(bgHandle);
-}
-
 void GameScene::Update()
 {
+	aliveCount = 0;
 	targetEnemy = nullptr;
 	minDistance = INT_MAX;
 
@@ -71,6 +84,7 @@ void GameScene::Update()
 			continue;
 		}
 
+		// プレイヤーとの距離
 		int distance = abs(enemy->x - player.x);
 
 		// 攻撃範囲外なら前進
@@ -87,10 +101,15 @@ void GameScene::Update()
 		}
 	}
 	
+	// ターゲットが存在する場合
 	if (targetEnemy != nullptr)
 	{
+		// プレイヤーの攻撃判定
 		playerEncount = (!targetEnemy->isDead && minDistance <= player.attackRange);
+
+		// 敵の攻撃判定
 		enemyEncount = (minDistance <= targetEnemy->attackRange);
+
 		// 攻撃範囲に来たら攻撃
 		if (playerEncount)
 		{
@@ -115,6 +134,7 @@ void GameScene::Update()
 			if (enemyAttackTimer >= 60)
 			{
 				player.hp -= targetEnemy->attack;
+				// プレイヤー死亡
 				if (player.hp <= 0)
 				{
 					isGameOver = true;
@@ -123,7 +143,7 @@ void GameScene::Update()
 			}
 		}
 
-		// 敵のHPが0になったら消去
+		// 敵死亡
 		if (targetEnemy->hp <= 0)
 		{
 			targetEnemy->isDead = true;
@@ -140,13 +160,32 @@ void GameScene::Update()
 	{
 		gameOverTimer++;
 
+		// 3秒後にリスタート
 		if (gameOverTimer >= 180)
 		{
 			GameManager::GetInstance().ChangeScene(std::make_unique<GameScene>(player.type));
 		}
+		return;
 	}
 
+	// 攻撃モーション切り替え
 	player.isAttack = playerEncount;
+
+	// 生存敵数を確認
+	for (auto& enemy : enemies)
+	{
+		if (!enemy->isDead)
+		{
+			aliveCount++;
+		}
+	}
+
+	// 全滅したら敵を再生成
+	if (aliveCount == 0)
+	{
+		enemies.clear(); 
+		SpawnEnemies();
+	}
 }
 
 void GameScene::Draw()
@@ -166,30 +205,7 @@ void GameScene::Draw()
 		}
 
 		int y = 50;
-
-		for (auto& enemy : enemies)
-		{
-			DrawFormatString(
-				50, y,
-				GetColor(255, 255, 255),
-				TEXT("EnemyX=%d"),
-				enemy->x
-			);
-
-			y += 30;
-		}
 	}
-
-	int hpWidth = player.hp * 150 / player.maxHp;
-	// 枠
-	DrawBox(250, 400, 400, 420,
-		GetColor(255, 255, 255), FALSE);
-
-	// HP
-	DrawBox(250, 400, 250 + hpWidth, 420, GetColor(0, 255, 0), TRUE);
-
-	SetFontSize(20);
-	DrawFormatString(250,380,GetColor(255, 255, 255),TEXT("HP %d / %d"),player.hp,player.maxHp);
 
 	// GameOver用画像表示
 	if (isGameOver)

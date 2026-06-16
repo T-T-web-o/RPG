@@ -33,9 +33,15 @@ private:
 	Enemy* targetEnemy;
 	int minDistance;
 
+	// “G‚Ì¶‚«‚Ä‚¢‚é”
+	int aliveCount;
+
 public:
 	GameScene(CharacterType type);
 	~GameScene();
+
+	void SpawnEnemies();
+
 	void Update()override;
 	void Draw()override;
 };

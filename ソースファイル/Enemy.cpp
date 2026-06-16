@@ -77,4 +77,12 @@ void Enemy::Draw()
 		TRUE
 	);
 
+	// HPÉoÅ[ï\é¶
+	int hpWidth = hp * 100 / maxHp;
+	// òg
+	DrawBox(x, y - 20, x + 100, y-10,
+		GetColor(255, 255, 255), FALSE);
+
+	// HP
+	DrawBox(x, y-20, x + hpWidth, y-10, GetColor(0, 255, 0), TRUE);
 }
