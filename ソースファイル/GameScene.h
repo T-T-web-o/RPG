@@ -16,6 +16,7 @@ private:
 	// ”wŒi‚ÌXÀ•W
 	int bgX;
 
+	// player
 	Character player;
 
 	bool playerEncount;

@@ -16,6 +16,8 @@ Enemy::Enemy()
 	defense = 0;
 	attackRange = 0;
 
+	rewardGold = 0;
+
 	isDead = false;
 
 	// “G‰æ‘œ‚ğ–¢“Ç‚İ‚İ‚Ìê‡‚Ì‚İƒ[ƒh
@@ -41,6 +43,7 @@ void Enemy::Init(EnemyType type)
 		attack = 10;
 		defense = 0;
 		attackRange = 240;
+		rewardGold = 10;
 		break;
 
 	case GREEN_SLIME:
@@ -49,6 +52,7 @@ void Enemy::Init(EnemyType type)
 		attack = 10;
 		defense = 0;
 		attackRange = 240;
+		rewardGold = 20;
 		break;
 	}
 }

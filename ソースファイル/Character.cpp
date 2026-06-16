@@ -11,11 +11,19 @@ Character::Character()
 
     // ステータス初期化
 	hp = 0;
+    maxHp = 0;
 	attack = 0;
     magic = 0;
 	defense = 0;
     attackRange = 0;
 	level = 1;
+
+    // 経験値
+    exp = 0;
+    nextExp = 100;
+
+    // 所持金
+    gold = 0;
 
     // アニメーション処理初期化
     animFrame = 0;
@@ -57,6 +65,7 @@ void Character::Init(CharacterType type)
         magic = 0;
         defense = 10;
         attackRange = 250;
+        level = 1;
         break;
 
     case RANGER:
@@ -66,6 +75,7 @@ void Character::Init(CharacterType type)
         magic = 5;
         defense = 5;
         attackRange = 250;
+        level = 1;
         break;
 
     case HEALER:
@@ -75,6 +85,7 @@ void Character::Init(CharacterType type)
         magic = 20;
         defense = 8;
         attackRange = 400;
+        level = 1;
         break;
 	}
 }
@@ -144,15 +155,37 @@ void Character::Draw()
         break;
     }
 
+    //==============================================
     // HPバー表示
+    //==============================================
     int hpWidth = hp * 150 / maxHp;
     // 枠
-    DrawBox(250, 400, 400, 420,
+    DrawBox(70, 120, 220, 150,
         GetColor(255, 255, 255), FALSE);
 
     // HP
-    DrawBox(250, 400, 250 + hpWidth, 420, GetColor(0, 255, 0), TRUE);
+    DrawBox(70, 120,70 + hpWidth, 150,  GetColor(0, 255, 0), TRUE);
 
     SetFontSize(20);
-    DrawFormatString(250, 380, GetColor(255, 255, 255), TEXT("HP %d / %d"), hp, maxHp);
+    DrawFormatString(75, 125, GetColor(255, 255, 255), TEXT("HP %d / %d"), hp, maxHp);
+
+    // レベル
+    DrawFormatString(70, 100,GetColor(255, 255, 255),TEXT("Lv.%d"),level);
+
+    //==============================================
+    // 経験値バー表示
+    //==============================================
+    int expWidth = exp * 150 / nextExp;
+
+    // 枠
+    DrawBox(70, 150, 220, 180,GetColor(255, 255, 255), FALSE);
+
+    // exp
+    DrawBox(70, 150, 70 + expWidth, 180,GetColor(0, 0, 255), TRUE);
+
+    SetFontSize(20);
+    DrawFormatString(75, 155, GetColor(255, 255, 255), TEXT("EXP %d / %d"), exp, nextExp);
+
+    // 所持金
+    DrawFormatString(70, 190, GetColor(255, 255, 255), TEXT("所持金 : %d"), gold);
 }

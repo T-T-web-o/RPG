@@ -147,6 +147,8 @@ void GameScene::Update()
 		if (targetEnemy->hp <= 0)
 		{
 			targetEnemy->isDead = true;
+			player.exp += 10;
+			player.gold += targetEnemy->rewardGold;
 		}
 	}
 	else
@@ -185,6 +187,20 @@ void GameScene::Update()
 	{
 		enemies.clear(); 
 		SpawnEnemies();
+	}
+
+	// レベルアップ
+	if (player.exp >= player.nextExp)
+	{
+		player.level++;
+
+		player.exp = 0;
+
+		player.nextExp += 50;
+
+		player.maxHp += 20;
+
+		player.hp = player.maxHp;
 	}
 }
 

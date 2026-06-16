@@ -16,11 +16,15 @@ public:
 
 	EnemyType type;
 
+	// ステータス
 	int hp;
 	int maxHp;
 	int attack;
 	int defense;
 	int attackRange;
+
+	// 獲得金額
+	int rewardGold;
 
 	void Init(EnemyType type);
 

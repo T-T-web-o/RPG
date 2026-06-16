@@ -38,6 +38,13 @@ public:
     int level;
     int attackRange;
 
+    // ŒoŒ±’l
+    int exp;
+    int nextExp;
+
+    // Š‹à
+    int gold;
+
     // ƒLƒƒƒ‰‚Ìí—Ş
     CharacterType type;
 
