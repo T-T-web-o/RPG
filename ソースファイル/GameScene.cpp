@@ -22,6 +22,9 @@ GameScene::GameScene()
 	// ゲームオーバー表示時間
 	gameOverTimer = 0;
 
+	// 回復時間
+	healTimer = 0;
+
 	// 背景画像
 	bgHandle = LoadGraph(TEXT("Resource/Model/background.png"));
 
@@ -64,12 +67,24 @@ void GameScene::Update()
 	targetEnemy = nullptr;
 	minDistance = INT_MAX;
 
+	
 	if (!playerEncount)
 	{
 		bgX -= 2;
 		if (bgX <= -1280)
 		{
 			bgX = 0;
+		}
+
+		healTimer++;
+
+		if (healTimer >= 60)
+		{
+			if (player.hp < player.maxHp)
+			{
+				player.hp += 2;
+			}
+			healTimer = 0;
 		}
 	}
 	

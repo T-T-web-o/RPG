@@ -34,6 +34,9 @@ private:
 	// “G‚Ì¶‚«‚Ä‚¢‚é”
 	int aliveCount;
 
+	// ‰ñ•œŠÔ
+	int healTimer;
+
 public:
 	GameScene();
 	~GameScene();
