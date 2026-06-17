@@ -5,11 +5,22 @@
 #include <vector>
 #include <memory>
 
+// 獲得ゴールド表示用
+struct GoldText
+{
+	int x;
+	int y;
+	int value;
+	int timer;
+};
+
 class GameScene:public Scene
 {
 private:
 
 	std::vector<std::unique_ptr<Enemy>> enemies;
+
+	std::vector<GoldText>goldTexts;
 
 	int bgHandle;
 
@@ -36,6 +47,12 @@ private:
 
 	// 回復時間
 	int healTimer;
+
+	// wave処理
+	int wave;
+	
+	// ボススポーンフラグ
+	bool bossSpawned;
 
 public:
 	GameScene();

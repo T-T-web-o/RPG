@@ -1,7 +1,7 @@
 #include "Enemy.h"
 #include "DxLib.h"
 
-int Enemy::enemyHandle = -1;
+int Enemy::blueSlimeHandle = -1;
 
 Enemy::Enemy()
 {
@@ -21,10 +21,12 @@ Enemy::Enemy()
 	isDead = false;
 
 	// 敵画像を未読み込みの場合のみロード
-	if (Enemy::enemyHandle == -1)
+	if (Enemy::blueSlimeHandle == -1)
 	{
-		Enemy::enemyHandle =LoadGraph(TEXT("Resource/Model/Enemy1.png"));
+		Enemy::blueSlimeHandle =LoadGraph(TEXT("Resource/Model/Enemy1.png"));
 	}
+
+	blueSlimeBossHandle = LoadGraph(TEXT("Resource/Model/Boss1.png"));
 }
 
 Enemy::~Enemy()
@@ -54,6 +56,14 @@ void Enemy::Init(EnemyType type)
 		attackRange = 240;
 		rewardGold = 20;
 		break;
+
+	case BLUE_SLIME_BOSS:
+		hp = 100;
+		maxHp = 100;
+		attack = 15;
+		defense = 0;
+		attackRange = 240;
+		rewardGold = 100;
 	}
 }
 
@@ -72,14 +82,28 @@ void Enemy::Draw()
 	int w = 100;
 	int h = 100;
 
-	DrawExtendGraph(
-		x,
-		y,
-		x + w,
-		y + h,
-		enemyHandle,
-		TRUE
-	);
+	
+
+	if (type == BLUE_SLIME)
+	{
+		DrawExtendGraph(
+			x,
+			y,
+			x + w,
+			y + h,
+			blueSlimeHandle,
+			TRUE);
+	}
+	else if (type == BLUE_SLIME_BOSS)
+	{
+		DrawExtendGraph(
+			x,
+			y,
+			x + w,
+			y + h,
+			blueSlimeBossHandle,
+			TRUE);
+	}
 
 	// HPバー表示
 	int hpWidth = hp * 100 / maxHp;

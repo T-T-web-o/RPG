@@ -5,7 +5,8 @@ enum EnemyType
 {
 	ENEMY_NONE,
 	BLUE_SLIME,
-	GREEN_SLIME
+	GREEN_SLIME,
+	BLUE_SLIME_BOSS
 };
 
 class Enemy
@@ -28,7 +29,11 @@ public:
 
 	void Init(EnemyType type);
 
-	static int enemyHandle;
+	// 青スライム
+	static int blueSlimeHandle;
+
+	// 青スライムボス
+	int blueSlimeBossHandle;
 
 	bool isDead;
 	Enemy();

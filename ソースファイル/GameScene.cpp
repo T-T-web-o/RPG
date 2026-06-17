@@ -16,6 +16,11 @@ GameScene::GameScene()
 	playerEncount = false;
 	enemyEncount = false;
 
+	// wave
+	wave = 1;
+
+	bossSpawned = false;
+
 	// ゲームオーバー状態
 	isGameOver = false;
 
@@ -165,6 +170,14 @@ void GameScene::Update()
 			targetEnemy->isDead = true;
 			player.exp += 10;
 			player.gold += targetEnemy->rewardGold;
+
+			goldTexts.push_back(
+				{
+					targetEnemy->x,
+					targetEnemy->y - 50,
+					targetEnemy->rewardGold,
+					60
+				});
 		}
 	}
 	else
@@ -202,7 +215,24 @@ void GameScene::Update()
 	if (aliveCount == 0)
 	{
 		enemies.clear(); 
-		SpawnEnemies();
+
+		// 3wave敵を倒すとボスへ
+		if (wave < 3)
+		{
+			wave++;
+			SpawnEnemies();
+		}
+		else if (!bossSpawned)
+		{
+			auto boss = EnemyFactory::CreateEnemy(BLUE_SLIME_BOSS);
+
+			boss->x = 1300;
+			boss->y = 540;
+
+			enemies.push_back(std::move(boss));
+
+			bossSpawned = true;
+		}
 	}
 
 	// レベルアップ
@@ -218,6 +248,26 @@ void GameScene::Update()
 
 		player.hp = player.maxHp;
 	}
+
+	//==============================================
+	// ゴールド獲得テキスト更新
+	//==============================================
+	for (auto& text : goldTexts)
+	{
+		text.y -= 1;      // 上へ移動
+		text.timer--;     // 表示時間減少
+	}
+
+	// 表示時間が切れたテキストを削除
+	goldTexts.erase(
+		std::remove_if(
+			goldTexts.begin(),
+			goldTexts.end(),
+			[](const GoldText& text)
+			{
+				return text.timer <= 0;
+			}),
+		goldTexts.end());
 }
 
 void GameScene::Draw()
@@ -246,5 +296,16 @@ void GameScene::Draw()
 	if (isGameOver)
 	{
 		DrawGraph(0, 200, youDiedHandle, TRUE);
+	}
+
+	for (auto& text : goldTexts)
+	{
+		DrawFormatString(
+			text.x,
+			text.y,
+			GetColor(255, 255, 0),
+			TEXT("+%dG"),
+			text.value
+		);
 	}
 }
