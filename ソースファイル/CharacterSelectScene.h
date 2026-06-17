@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene.h"
 #include "Character.h"
+#include <tchar.h>
 
 class CharacterSelectScene:public Scene
 {
@@ -13,6 +14,11 @@ private:
 
 	CharacterType selectedType;
 
+	CharacterType types[3];
+
+    int handles[3];
+
+	const TCHAR* names[3];
 public:
 
 	CharacterSelectScene();

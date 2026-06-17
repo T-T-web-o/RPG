@@ -5,15 +5,32 @@
 
 CharacterSelectScene::CharacterSelectScene()
 {
-	mouseX = 0;
-	mouseY = 0;
+    // マウス座標初期化
+    mouseX = 0;
+    mouseY = 0;
 
+    // 未選択状態
     selectedType = CHARACTER_NONE;
 
-    // キャラクター画像
+    // キャラクター種類設定
+    types[0] = KNIGHT;
+    types[1] = RANGER;
+    types[2] = HEALER;
+
+    // キャラクター選択画像読み込み
     knightSelectHandle = LoadGraph(TEXT("Resource/Model/Select1.png"));
     rangerSelectHandle = LoadGraph(TEXT("Resource/Model/Select2.png"));
     healerSelectHandle = LoadGraph(TEXT("Resource/Model/Select3.png"));
+
+    // 画像ハンドル設定
+    handles[0] = knightSelectHandle;
+    handles[1] = rangerSelectHandle;
+    handles[2] = healerSelectHandle;
+
+    // キャラクター名設定
+    names[0] = TEXT(" ナイト");
+    names[1] = TEXT("レンジャー");
+    names[2] = TEXT("ヒーラー");
 }
 
 CharacterSelectScene::~CharacterSelectScene()
@@ -25,32 +42,31 @@ CharacterSelectScene::~CharacterSelectScene()
 
 void CharacterSelectScene::Update()
 {
+    // マウス座標取得
     GetMousePoint(&mouseX, &mouseY);
 
+    // 前フレームのマウス入力状態
     static int oldMouse = 0;
 
+    // 現在のマウス入力状態
     int mouse = GetMouseInput();
 
+    // マウス左クリック時
     if ((mouse & MOUSE_INPUT_LEFT) &&
         !(oldMouse & MOUSE_INPUT_LEFT))
     {
-        // KNIGHT
-        if (mouseX >= 100 && mouseX <= 320 &&
-            mouseY >= 180 && mouseY <= 500)
+        // キャラクター選択
+        for (int i = 0; i < 3; i++)
         {
-            selectedType = KNIGHT;
-        }
-        // RANGER
-        else if (mouseX >= 530 && mouseX <= 750 &&
-            mouseY >= 180 && mouseY <= 500)
-        {
-            selectedType = RANGER;
-        }
-        // HEALER
-        else if (mouseX >= 960 && mouseX <= 1180 &&
-            mouseY >= 180 && mouseY <= 500)
-        {
-            selectedType = HEALER;
+            int x = 100 + i * 430;
+
+            if (mouseX >= x &&
+                mouseX <= x + 220 &&
+                mouseY >= 180 &&
+                mouseY <= 500)
+            {
+                selectedType = types[i];
+            }
         }
 
         // 決定ボタン
@@ -67,6 +83,7 @@ void CharacterSelectScene::Update()
             }
         }
     }
+    oldMouse = mouse;
 }
 
 void CharacterSelectScene::Draw()
@@ -74,38 +91,26 @@ void CharacterSelectScene::Draw()
     SetFontSize(50);
     DrawString(430, 50, TEXT("Character Select"), GetColor(255, 255, 255));
 
-    // KNIGHT
-    DrawBox(100, 180, 320, 500, GetColor(255, 255, 255), FALSE);
-    DrawExtendGraph(120, 220, 300, 460, knightSelectHandle, TRUE);
-    if (selectedType == KNIGHT)
+    // 選択画像を表示
+    for (int i = 0; i < 3; i++)
     {
-        DrawBox(100, 180, 320, 500,
-            GetColor(255, 255, 0), FALSE);
+        int x = 100 + i * 430;
+        // 枠
+        DrawBox(x, 180,x + 220, 500,GetColor(255, 255, 255),FALSE);
+
+        // キャラクター画像
+        DrawExtendGraph(x + 20, 220, x + 200, 460, handles[i], TRUE);
+
+        // 名前
+        DrawString(x + 10, 130, names[i], GetColor(255, 255, 0));
+
+        // 選択枠
+        if (selectedType == types[i])
+        {
+            DrawBox(x, 180, x + 220, 500, GetColor(255, 255, 0), FALSE);
+        }
     }
-
-    // RANGER
-    DrawBox(530, 180, 750, 500, GetColor(255, 255, 255), FALSE);
-    DrawExtendGraph(550, 220, 730, 460, rangerSelectHandle, TRUE);
-    if (selectedType == RANGER)
-    {
-        DrawBox(530, 180, 750, 500,
-            GetColor(255, 255, 0), FALSE);
-    }
-
-    // HEALER
-    DrawBox(960, 180, 1180, 500, GetColor(255, 255, 255), FALSE);
-    DrawExtendGraph(980, 220, 1160, 460, healerSelectHandle, TRUE);
-    if (selectedType == HEALER)
-    {
-        DrawBox(960, 180, 1180, 500,
-            GetColor(255, 255, 0), FALSE);
-    }
-
-    SetFontSize(30);
-    DrawString(160, 140, TEXT("ナイト"), GetColor(255, 255, 0));
-    DrawString(580, 140, TEXT("レンジャー"), GetColor(255, 255, 0));
-    DrawString(1020, 140, TEXT("ヒーラー"), GetColor(255, 255, 0));
-
+   
     // 決定ボタン
     if (selectedType != CHARACTER_NONE)
     {
