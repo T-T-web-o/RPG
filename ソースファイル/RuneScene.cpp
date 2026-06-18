@@ -34,6 +34,4 @@ void RuneScene::Draw()
 
 		DrawString(x + 50, 250, names[i], GetColor(255, 255, 0));
 	}
-
-	
 }
