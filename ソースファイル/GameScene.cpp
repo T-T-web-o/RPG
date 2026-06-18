@@ -1,6 +1,7 @@
 #include "GameScene.h"
 #include "EnemyFactory.h"
 #include "GameManager.h"
+#include "RuneScene.h"
 #include <cmath>
 #include "DxLib.h"
 #include <limits>
@@ -8,6 +9,10 @@
 
 GameScene::GameScene()
 {
+	// ステージ
+	world = 1;
+	stage = 1;
+
 	// 攻撃タイマー
 	attackTimer = 0;
 	enemyAttackTimer = 0;
@@ -233,6 +238,23 @@ void GameScene::Update()
 
 			bossSpawned = true;
 		}
+		// ボス撃破後
+		else 
+		{
+			stage++;
+
+			if (stage > 3)
+			{
+				world++;
+				stage = 1;
+			}
+
+			wave = 1;
+
+			bossSpawned = false;
+
+			SpawnEnemies();
+		}
 	}
 
 	// レベルアップ
@@ -308,4 +330,14 @@ void GameScene::Draw()
 			text.value
 		);
 	}
+
+	// 現在のステージ表示
+	DrawFormatString(
+		50,
+		50,
+		GetColor(255, 255, 255),
+		TEXT("1-%d  Wave %d"),
+		stage,
+		wave
+	);
 }

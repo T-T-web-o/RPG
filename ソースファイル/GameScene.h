@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "Character.h"
 #include "Enemy.h"
+#include "Rune.h"
 #include <vector>
 #include <memory>
 
@@ -53,6 +54,16 @@ private:
 	
 	// ボススポーンフラグ
 	bool bossSpawned;
+
+	// ステージ
+	int world;
+	int stage;
+
+	// ルーン
+	Rune attackRune;
+	Rune hpRune;
+	Rune goldRune;
+	Rune expRune;
 
 public:
 	GameScene();

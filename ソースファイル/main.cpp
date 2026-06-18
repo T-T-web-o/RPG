@@ -1,5 +1,6 @@
 #include "Dxlib.h"
 #include "GameManager.h"
+#include "Input.h"
 
 //============================================================
 // アプリケーションのエントリーポイント
@@ -27,6 +28,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         // 画面クリア
         ClearDrawScreen();
         
+        // 入力処理更新
+        Input::Update();
+
         GameManager::GetInstance().Update();
 
         GameManager::GetInstance().Draw();

@@ -135,6 +135,9 @@
     <ClInclude Include="EnemyFactory.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="Rune.h" />
+    <ClInclude Include="RuneScene.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="TitleScene.h" />
   </ItemGroup>
@@ -145,7 +148,10 @@
     <ClCompile Include="EnemyFactory.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Rune.cpp" />
+    <ClCompile Include="RuneScene.cpp" />
     <ClCompile Include="TitleScene.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

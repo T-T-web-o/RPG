@@ -1,6 +1,7 @@
 #include "CharacterSelectScene.h"
 #include "GameManager.h"
 #include "GameScene.h"
+#include "Input.h"
 #include "DxLib.h"
 
 CharacterSelectScene::CharacterSelectScene()
@@ -45,15 +46,8 @@ void CharacterSelectScene::Update()
     // マウス座標取得
     GetMousePoint(&mouseX, &mouseY);
 
-    // 前フレームのマウス入力状態
-    static int oldMouse = 0;
-
-    // 現在のマウス入力状態
-    int mouse = GetMouseInput();
-
     // マウス左クリック時
-    if ((mouse & MOUSE_INPUT_LEFT) &&
-        !(oldMouse & MOUSE_INPUT_LEFT))
+    if (Input::IsLeftTrigger())
     {
         // キャラクター選択
         for (int i = 0; i < 3; i++)
@@ -83,7 +77,6 @@ void CharacterSelectScene::Update()
             }
         }
     }
-    oldMouse = mouse;
 }
 
 void CharacterSelectScene::Draw()
