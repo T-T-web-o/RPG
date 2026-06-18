@@ -27,6 +27,9 @@ private:
 
 	// 背景のX座標
 	int bgX;
+	
+	// マウスの座標XY
+	int mouseX, mouseY;
 
 	bool playerEncount;
 	bool enemyEncount;
@@ -59,12 +62,10 @@ private:
 	int world;
 	int stage;
 
-	// ルーン
-	Rune attackRune;
-	Rune hpRune;
-	Rune goldRune;
-	Rune expRune;
+	int runeHandle;
 
+	int runeX;
+	int runeY;
 public:
 	GameScene();
 	~GameScene();

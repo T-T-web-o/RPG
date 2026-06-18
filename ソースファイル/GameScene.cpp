@@ -2,6 +2,7 @@
 #include "EnemyFactory.h"
 #include "GameManager.h"
 #include "RuneScene.h"
+#include "Input.h"
 #include <cmath>
 #include "DxLib.h"
 #include <limits>
@@ -25,6 +26,10 @@ GameScene::GameScene()
 	wave = 1;
 
 	bossSpawned = false;
+	
+	// ルーン座標
+	runeX = 1100;
+	runeY = 20;
 
 	// ゲームオーバー状態
 	isGameOver = false;
@@ -290,6 +295,21 @@ void GameScene::Update()
 				return text.timer <= 0;
 			}),
 		goldTexts.end());
+
+	// マウス座標取得
+	GetMousePoint(&mouseX, &mouseY);
+
+	// マウス左クリック時
+	if (Input::IsLeftTrigger())
+	{
+		if (mouseX >= runeX &&
+			mouseX <= runeX + 64 &&
+			mouseY >= runeY &&
+			mouseY <= runeY + 64)
+		{
+			GameManager::GetInstance().ChangeScene(std::make_unique<RuneScene>());
+		}
+	}
 }
 
 void GameScene::Draw()
@@ -336,8 +356,18 @@ void GameScene::Draw()
 		50,
 		50,
 		GetColor(255, 255, 255),
-		TEXT("1-%d  Wave %d"),
+		TEXT("&d-%d  Wave %d"),
+		world,
 		stage,
 		wave
+	);
+
+	DrawBox(
+		runeX - 2,
+		runeY - 2,
+		runeX + 66,
+		runeY + 66,
+		GetColor(255, 255, 255),
+		FALSE
 	);
 }
